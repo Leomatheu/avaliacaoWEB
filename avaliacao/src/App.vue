@@ -27,7 +27,7 @@
         <th>Média</th>
         <th>Status</th>
       </tr>
-      <tr v-for="aluno in listaAlunos" :key="aluno.listaAlunos" @click="adicionaAluno(aluno)" :class=" {'aprovado' : verificaStatus(aluno.status)}"> 
+      <tr v-for="aluno in listaAlunos" :key="aluno.listaAlunos" @click="adicionaAluno(aluno)" :class="{'aprovado' : verificaStatus(aluno.status)}"> 
         <td>{{ aluno.aluno }}</td>
         <td>{{ aluno.media }}</td>
         <td>{{ aluno.status }} </td>
