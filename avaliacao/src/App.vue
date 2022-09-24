@@ -1,36 +1,33 @@
 <template>
   <div>
-    <form>
+    <form @submit.prevent="adicionaAluno()">
       <label for="Nota1"> Nome aluno  </label>
       <input type="text" id="nomeAluno" size="30" v-model="aluno"><br/>
       <br/>  
       <br/> 
       <label for="Nota1"> Nota 1  </label>
-      <input type="text" id="primeiraNota" size="10" v-model="listaAlunos.nota1"><br/>
+      <input type="text" id="primeiraNota" size="10" v-model="nota1"><br/>
       <br/>
       <label for="Nota2"> Nota 2  </label>
-      <input type="text" id="segundaNota" size="10" v-model="listaAlunos.nota2"><br/>
+      <input type="text" id="segundaNota" size="10" v-model="nota2"><br/>
       <br/>
       <label for="Nota3"> Nota 3  </label>
-      <input type="text" id="segundaNota" size="10" v-model="listaAlunos.nota3"><br/>  
+      <input type="text" id="segundaNota" size="10" v-model="nota3"><br/>  
       <br/>
       <br/>
-      <button @click="adicionaAluno()">Cálculo de Media</button>   
+      <input type="submit" value="Cálculo de Media"/>
     </form>
-  </div>
   <br/>
   <br/>
   <br/>
   <br/>
-  <div>
     <table>
       <tr>
         <th>Aluno</th>
         <th>Média</th>
         <th>Status</th>
       </tr>
-      <tr v-for="aluno in listaAlunos" :key="aluno.aluno"> 
-        <!-- coloca o estilo caso o isSelected seja true -->
+      <tr v-for="aluno in listaAlunos" :key="aluno.listaAlunos" @click="adicionaAluno(aluno)" :class=" {'aprovado' : verificaStatus(aluno.status)}"> 
         <td>{{ aluno.aluno }}</td>
         <td>{{ aluno.media }}</td>
         <td>{{ aluno.status }} </td>
@@ -45,16 +42,11 @@
 export default {
  data () {
   return {
-        aluno : '',
-        nota1 : 0.0,
-        nota2 : 0.0,
-        nota3 : 0.0,
-
       listaAlunos : [{
-        aluno : 'teste',
-        nota1 : 1.0,
-        nota2 : 2.0,
-        nota3 : 10.0,
+        aluno : '',
+        nota1 : 0,
+        nota2 : 0,
+        nota3 : 0,
         media : this.calculaMedia(),
         status : this.verificaStatus()
       }]
@@ -63,9 +55,8 @@ export default {
 
  methods : {
    calculaMedia() {
-      let ma = (this.nota1 + this.nota2 * 2 + this.nota3 * 3)/7
-      this.media = ma
-      console.log(this.media)        
+      this.media = ( this.nota1 + (this.nota2 * 2) + (this.nota3 * 3) ) / 6  
+      return this.media    
     },
     
     adicionaAluno() {
@@ -73,17 +64,18 @@ export default {
           aluno : this.aluno,
           nota1 : this.nota1,
           nota2 : this.nota2,
-          nota3 : this.nota3
+          nota3 : this.nota3,
+          media : this.calculaMedia(),
+          status : this.verificaStatus()
         })
-      console.log(this.listaAlunos)
     },
 
     verificaStatus() {
       if (this.media >= 7.0) {
-            this.status = 'aprovado'
+            return this.status = 'aprovado'
           }
           else {
-            'reprovado'
+            return this.status = 'reprovado'
           }
     }
  }
@@ -94,7 +86,11 @@ export default {
 </script>
 
 <style>
-#app {
+.aprovado{
+  background-color: blue;
+}
 
+.reprovado{
+  background-color: red;
 }
 </style>
